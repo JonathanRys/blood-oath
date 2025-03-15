@@ -1,0 +1,4 @@
+.env
+.env.*
+design/
+node_modules/

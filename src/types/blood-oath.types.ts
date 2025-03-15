@@ -118,6 +118,11 @@ export interface Contract {
   response: ContractResponse;
 }
 
+export interface UnsignedContract {
+  meta: ContractMeta;
+  request: ContractRequest;
+}
+
 // OpenAPI
 export type OpenApiV3Info = {
   version: string;

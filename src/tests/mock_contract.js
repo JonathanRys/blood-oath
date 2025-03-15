@@ -3,9 +3,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.contracts = exports.contract = void 0;
 exports.contract = {
     meta: {
-        statement: "when a call to the OpenLibrary API is made",
-        description: "A book with ISBN 0201558025 exists",
-        action: "a request for a book",
+        version: "1.0.0",
+        title: "OpenLibrary API",
+        license: { name: "MIT" },
+        summary: "",
+        operationId: "listBooks",
+        tags: ["book"],
     },
     request: {
         host: "https://openlibrary.org",

@@ -1,13 +1,13 @@
 import { promises as fs } from "fs";
 import isEqual from "lodash/isEqual";
 import type {
+  APIDocument,
   Contract,
-  ContractMeta,
   ContractRequest,
   ContractResponse,
-  httpBody,
   HttpHeaders,
   HttpParams,
+  OpenApiV3Info,
   UnsignedContract,
 } from "@/types";
 import { compileErrors, validate, dereference } from "@readme/openapi-parser";
@@ -33,17 +33,6 @@ const getReqUrl = (contractRequest: ContractRequest): string => {
   const port = contractRequest.port ? `:${contractRequest.port}` : "";
   const params = convertParams(contractRequest.params);
   return `${contractRequest.host}${port}${contractRequest.path}${params}`;
-};
-
-const convertMeta = (openApiSpec: {}): ContractMeta => {
-  /**
-   *
-   */
-  return {
-    statement: "",
-    description: "",
-    action: "",
-  };
 };
 
 const convertHeaders = (headers: Headers): HttpHeaders => {
@@ -152,7 +141,7 @@ const draftContracts = async (
   }
   const openApiSpec = await dereference(specFile);
   // get meta data - @todo this needs to happen inside a loop
-  const meta = convertMeta(openApiSpec);
+  const meta = openApiSpec.info;
   // get request data
   const host = openApiSpec.externalDocs?.url;
   const port = host?.slice(0, 5) === "https" ? 443 : 80;
@@ -165,8 +154,14 @@ const draftContracts = async (
     const methods = Object.keys(pathData);
     const result = methods.map((method) => {
       const data = pathData[method];
+      const { summary, operationId, tags } = data;
       return {
-        meta,
+        meta: {
+          ...meta,
+          summary,
+          operationId,
+          tags,
+        },
         request: {
           host,
           port,

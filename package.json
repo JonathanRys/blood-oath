@@ -2,7 +2,10 @@
   "name": "blood-oath",
   "version": "1.0.0",
   "description": "A contract testing library",
-  "main": "blood-oath.js",
+  "main": "index.js",
+  "bin": {
+    "blood-oath": "./bin/blood-oath.js"
+  },
   "directories": {
     "test": "tests"
   },

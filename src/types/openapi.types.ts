@@ -17,14 +17,39 @@ export type OpenApiV3Servers = {
   url: string;
 };
 
+export type OpenApiV3DataType =
+  | "integer"
+  | "array"
+  | "string"
+  | "boolean"
+  | "number"
+  | "object";
+
+export type OpenApiV3DataValue = [] | string | boolean | number | object;
+
+export type OpenApiV3DataFormat = "date";
+
+export type OpenApiV3Schema = {
+  type: string;
+  integer?: string;
+  items?: { type: OpenApiV3DataType };
+  minItems?: number;
+};
+
 export type OpenApiV3RequestParams = {
   name: string;
   in: string;
   description: string;
+  type: OpenApiV3DataType;
   required: string;
-  schema: {
-    type: string;
-    integer: string;
+  schema: OpenApiV3Schema;
+  minimum?: OpenApiV3DataValue;
+  maximum?: OpenApiV3DataValue;
+  default?: OpenApiV3DataValue;
+  format?: string;
+  enum?: [];
+  items?: {
+    type: OpenApiV3DataType;
   };
 };
 
@@ -32,7 +57,7 @@ export type OpenApiV3RequestMethods = {
   summary: string;
   operationId: string;
   tags: string[];
-  parameters: OpenApiV3RequestParams;
+  parameters: OpenApiV3RequestParams[];
   responses: OpenApiV3RequestResponses;
 };
 
@@ -47,10 +72,7 @@ export type OpenApiV3RequestResponses = Record<
   OpenApiV3RequestResponse
 >;
 
-export type OpenApiV3Request = Record<
-  keyof HttpMethod,
-  OpenApiV3RequestMethods
->;
+export type OpenApiV3Request = Record<HttpMethod, OpenApiV3RequestMethods>;
 
 export type OpenApiV3Paths = {
   [key: string]: OpenApiV3Request;
